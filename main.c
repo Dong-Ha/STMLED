@@ -68,7 +68,7 @@ void SET_CUBE(char arr[][5][5]);
 char CUBEARR[5][5][5] = {0,};
 char MAZECUBE[8][8][8] = {0.};
 int x = 2,y=2,z=2;
-uint8_t rx1_data[3];
+uint8_t rx1_data;
 uint8_t bb = 0;
 /* USER CODE END 0 */
 
@@ -108,8 +108,8 @@ int main(void)
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim6);
-  HAL_UART_Receive_IT(&huart1, &rx1_data[0],3);
-  HAL_UART_Receive_IT(&huart5, &rx1_data[0],3);
+  //HAL_UART_Receive_IT(&huart1, &rx1_data[0],sizeof(rx1_data));
+  HAL_UART_Receive_IT(&huart5, &rx1_data, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -379,12 +379,12 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
+{/*
 	if(huart->Instance == USART1)
 	{
-		HAL_UART_Receive_IT(&huart1, &rx1_data[0],3);
+		HAL_UART_Receive_IT(&huart1, rx1_data,1);
 		HAL_UART_Transmit(&huart1, &bb, 1, 10);
-	}
+	}*/
 
 	if(huart->Instance == UART5)
 		{/*
@@ -393,14 +393,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			bb = bb + rx1_data - '0';
 			HAL_UART_Transmit(&huart5, &bb, 1, 10);*/
 
-			HAL_UART_Receive_IT(&huart5, &rx1_data[0],3);
+			HAL_UART_Receive_IT(&huart5, &rx1_data, 1);
 
-			if(rx1_data == 'w' && x<6)x++;
-			else if(rx1_data == 's' && x>2)x--;
-			else if(rx1_data == 'a' && y>2)y--;
-			else if(rx1_data == 'd' && y<6)y++;
+			if(rx1_data == 'r' && x<6)x++;
+			else if(rx1_data == 'l' && x>2)x--;
+			else if(rx1_data == 'g' && y>2)y--;
+			else if(rx1_data == 'b' && y<6)y++;
 			else if(rx1_data == 'u' && z<6)z++;
-			else if(rx1_data == 'x' && z>2)z--;
+			else if(rx1_data == 'd' && z>2)z--;
 
 
 		}
@@ -577,6 +577,298 @@ void SET_MAZE_CUBE(char arr[][9][9], int z, int y, int x){ // A : z , B~E : x y
 
 	HAL_GPIO_WritePin(A4_GPIO_Port, A4_Pin, 0);
 	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z-2][y-2][x-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z-2][y-1][x-2]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z-2][y][x-2]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z-2][y+1][x-2]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z-2][y+2][x-2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z-2][y-2][x-1]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z-2][y-1][x-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z-2][y][x-1]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z-2][y+1][x-1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z-2][y+2][x-1]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z-2][y-2][x]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z-2][y-1][x]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z-2][y][x]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z-2][y+1][x]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z-2][y+2][x]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z-2][y-2][x+1]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z-2][y-1][x+1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z-2][y][x+1]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z-2][y+1][x+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z-2][y+2][x+1]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z-2][y-2][x+2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z-2][y-1][x+2]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z-2][y][x+2]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z-2][y+1][x+2]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z-2][y+2][x+2]);
+	HAL_GPIO_WritePin(A0_GPIO_Port, A0_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A0_GPIO_Port, A0_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z-1][y-2][x-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z-1][y-1][x-2]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z-1][y][x-2]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z-1][y+1][x-2]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z-1][y+2][x-2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z-1][y-2][x-1]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z-1][y-1][x-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z-1][y][x-1]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z-1][y+1][x-1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z-1][y+2][x-1]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z-1][y-2][x]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z-1][y-1][x]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z-1][y][x]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z-1][y+1][x]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z-1][y+2][x]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z-1][y-2][x+1]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z-1][y-1][x+1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z-1][y][x+1]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z-1][y+1][x+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z-1][y+2][x+1]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z-1][y-2][x+2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z-1][y-1][x+2]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z-1][y][x+2]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z-1][y+1][x+2]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z-1][y+2][x+2]);
+	HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z][y-2][x-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z][y-1][x-2]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z][y][x-2]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z][y+1][x-2]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z][y+2][x-2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z][y-2][x-1]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z][y-1][x-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z][y][x-1]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z][y+1][x-1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z][y+2][x-1]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z][y-2][x]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z][y-1][x]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z][y][x]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z][y+1][x]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z][y+2][x]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z][y-2][x+1]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z][y-1][x+1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z][y][x+1]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z][y+1][x+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z][y+2][x+1]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z][y-2][x+2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z][y-1][x+2]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z][y][x+2]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z][y+1][x+2]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z][y+2][x+2]);
+	HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z+1][y-2][x-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z+1][y-1][x-2]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z+1][y][x-2]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z+1][y+1][x-2]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z+1][y+2][x-2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z+1][y-2][x-1]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z+1][y-1][x-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z+1][y][x-1]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z+1][y+1][x-1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z+1][y+2][x-1]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z+1][y-2][x]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z+1][y-1][x]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z+1][y][x]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z+1][y+1][x]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z+1][y+2][x]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z+1][y-2][x+1]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z+1][y-1][x+1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z+1][y][x+1]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z+1][y+1][x+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z+1][y+2][x+1]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z+1][y-2][x+2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z+1][y-1][x+2]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z+1][y][x+2]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z+1][y+1][x+2]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z+1][y+2][x+2]);
+	HAL_GPIO_WritePin(A3_GPIO_Port, A3_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A3_GPIO_Port, A3_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z+2][y-2][x-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z+2][y-1][x-2]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z+2][y][x-2]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z+2][y+1][x-2]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z+2][y+2][x-2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z+2][y-2][x-1]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z+2][y-1][x-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z+2][y][x-1]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z+2][y+1][x-1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z+2][y+2][x-1]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z+2][y-2][x]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z+2][y-1][x]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z+2][y][x]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z+2][y+1][x]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z+2][y+2][x]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z+2][y-2][x+1]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z+2][y-1][x+1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z+2][y][x+1]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z+2][y+1][x+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z+2][y+2][x+1]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z+2][y-2][x+2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z+2][y-1][x+2]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z+2][y][x+2]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z+2][y+1][x+2]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z+2][y+2][x+2]);
+	HAL_GPIO_WritePin(A4_GPIO_Port, A4_Pin, 1);
+	HAL_Delay(1);
+
+/*
+	HAL_GPIO_WritePin(A4_GPIO_Port, A4_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z-2][x-2][y-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z-2][x-2][y-1]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z-2][x-2][y]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z-2][x-2][y+1]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z-2][x-2][y+2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z-2][x-1][y-2]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z-2][x-1][y-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z-2][x-1][y]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z-2][x-1][y+1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z-2][x-1][y+2]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z-2][x][y-2]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z-2][x][y-1]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z-2][x][y]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z-2][x][y+1]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z-2][x][y+2]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z-2][x+1][y-2]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z-2][x+1][y-1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z-2][x+1][y]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z-2][x+1][y+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z-2][x+1][y+2]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z-2][x+2][y-2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z-2][x+2][y-1]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z-2][x+2][y]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z-2][x+2][y+1]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z-2][x+2][y+2]);
+	HAL_GPIO_WritePin(A0_GPIO_Port, A0_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A0_GPIO_Port, A0_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z-1][x-2][y-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z-1][x-2][y-1]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z-1][x-2][y]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z-1][x-2][y+1]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z-1][x-2][y+2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z-1][x-1][y-2]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z-1][x-1][y-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z-1][x-1][y]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z-1][x-1][y+1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z-1][x-1][y+2]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z-1][x][y-2]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z-1][x][y-1]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z-1][x][y]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z-1][x][y+1]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z-1][x][y+2]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z-1][x+1][y-2]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z-1][x+1][y-1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z-1][x+1][y]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z-1][x+1][y+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z-1][x+1][y+2]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z-1][x+2][y-2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z-1][x+2][y-1]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z-1][x+2][y]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z-1][x+2][y+1]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z-1][x+2][y+2]);
+	HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z][x-2][y-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z][x-2][y-1]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z][x-2][y]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z][x-2][y+1]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z][x-2][y+2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z][x-1][y-2]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z][x-1][y-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z][x-1][y]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z][x-1][y+1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z][x-1][y+2]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z][x][y-2]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z][x][y-1]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z][x][y]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z][x][y+1]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z][x][y+2]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z][x+1][y-2]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z][x+1][y-1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z][x+1][y]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z][x+1][y+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z][x+1][y+2]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z][x+2][y-2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z][x+2][y-1]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z][x+2][y]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z][x+2][y+1]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z][x+2][y+2]);
+	HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z+1][x-2][y-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z+1][x-2][y-1]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z+1][x-2][y]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z+1][x-2][y+1]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z+1][x-2][y+2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z+1][x-1][y-2]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z+1][x-1][y-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z+1][x-1][y]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z+1][x-1][y+1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z+1][x-1][y+2]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z+1][x][y-2]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z+1][x][y-1]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z+1][x][y]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z+1][x][y+1]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z+1][x][y+2]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z+1][x+1][y-2]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z+1][x+1][y-1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z+1][x+1][y]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z+1][x+1][y+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z+1][x+1][y+2]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z+1][x+2][y-2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z+1][x+2][y-1]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z+1][x+2][y]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z+1][x+2][y+1]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z+1][x+2][y+2]);
+	HAL_GPIO_WritePin(A3_GPIO_Port, A3_Pin, 1);
+	HAL_Delay(1);
+
+	HAL_GPIO_WritePin(A3_GPIO_Port, A3_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z+2][x-2][y-2]);
+	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z+2][x-2][y-1]);
+	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z+2][x-2][y]);
+	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z+2][x-2][y+1]);
+	HAL_GPIO_WritePin(B4_GPIO_Port, B4_Pin, arr[z+2][x-2][y+2]);
+	HAL_GPIO_WritePin(C0_GPIO_Port, C0_Pin, arr[z+2][x-1][y-2]);
+	HAL_GPIO_WritePin(C1_GPIO_Port, C1_Pin, arr[z+2][x-1][y-1]);
+	HAL_GPIO_WritePin(C2_GPIO_Port, C2_Pin, arr[z+2][x-1][y]);
+	HAL_GPIO_WritePin(C3_GPIO_Port, C3_Pin, arr[z+2][x-1][y+1]);
+	HAL_GPIO_WritePin(C4_GPIO_Port, C4_Pin, arr[z+2][x-1][y+2]);
+	HAL_GPIO_WritePin(D0_GPIO_Port, D0_Pin, arr[z+2][x][y-2]);
+	HAL_GPIO_WritePin(D1_GPIO_Port, D1_Pin, arr[z+2][x][y-1]);
+	HAL_GPIO_WritePin(D2_GPIO_Port, D2_Pin, arr[z+2][x][y]);
+	HAL_GPIO_WritePin(D3_GPIO_Port, D3_Pin, arr[z+2][x][y+1]);
+	HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, arr[z+2][x][y+2]);
+	HAL_GPIO_WritePin(E0_GPIO_Port, E0_Pin, arr[z+2][x+1][y-2]);
+	HAL_GPIO_WritePin(E1_GPIO_Port, E1_Pin, arr[z+2][x+1][y-1]);
+	HAL_GPIO_WritePin(E2_GPIO_Port, E2_Pin, arr[z+2][x+1][y]);
+	HAL_GPIO_WritePin(E3_GPIO_Port, E3_Pin, arr[z+2][x+1][y+1]);
+	HAL_GPIO_WritePin(E4_GPIO_Port, E4_Pin, arr[z+2][x+1][y+2]);
+	HAL_GPIO_WritePin(F0_GPIO_Port, F0_Pin, arr[z+2][x+2][y-2]);
+	HAL_GPIO_WritePin(F1_GPIO_Port, F1_Pin, arr[z+2][x+2][y-1]);
+	HAL_GPIO_WritePin(F2_GPIO_Port, F2_Pin, arr[z+2][x+2][y]);
+	HAL_GPIO_WritePin(F3_GPIO_Port, F3_Pin, arr[z+2][x+2][y+1]);
+	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z+2][x+2][y+2]);
+	HAL_GPIO_WritePin(A4_GPIO_Port, A4_Pin, 1);
+	HAL_Delay(1);
+*/
+/*
+	HAL_GPIO_WritePin(A4_GPIO_Port, A4_Pin, 0);
+	HAL_GPIO_WritePin(B0_GPIO_Port, B0_Pin, arr[z-2][y-2][x-2]);
 	HAL_GPIO_WritePin(B1_GPIO_Port, B1_Pin, arr[z-2][y-2][x-1]);
 	HAL_GPIO_WritePin(B2_GPIO_Port, B2_Pin, arr[z-2][y-2][x]);
 	HAL_GPIO_WritePin(B3_GPIO_Port, B3_Pin, arr[z-2][y-2][x+1]);
@@ -719,6 +1011,7 @@ void SET_MAZE_CUBE(char arr[][9][9], int z, int y, int x){ // A : z , B~E : x y
 	HAL_GPIO_WritePin(F4_GPIO_Port, F4_Pin, arr[z+2][y+2][x+2]);
 	HAL_GPIO_WritePin(A4_GPIO_Port, A4_Pin, 1);
 	HAL_Delay(1);
+*/
 
 }
 /* USER CODE END 4 */
