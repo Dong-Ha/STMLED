@@ -208,7 +208,7 @@ static void MX_TIM6_Init(void)
   htim6.Instance = TIM6;
   htim6.Init.Prescaler = 8400-1;
   htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim6.Init.Period = 1000-1;
+  htim6.Init.Period = 10000-1;
   htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
   {
@@ -402,27 +402,27 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 			switch( rx1_data ) {
 			case 'r': {
-				if(x < 6) x++;
+				if(x < 6 && maze_basic[z][y][x+1] == 1) x++;
 				break;
 				}
 			case 'l': {
-				if(x > 2) x--;
+				if(x > 2 && maze_basic[z][y][x-1] == 1) x--;
 				break;
 			}
 			case 'g': {
-				if(y > 2) y--;
+				if(y > 2 && maze_basic[z][y-1][x] == 1) y--;
 				break;
 			}
 			case 'b': {
-				if(y < 6) y++;
+				if(y < 6 && maze_basic[z][y+1][x] == 1) y++;
 				break;
 			}
 			case 'u': {
-				if(z < 6) z++;
+				if(z < 6 && maze_basic[z+1][y][x] == 1) z++;
 				break;
 			}
 			case 'd': {
-				if(z > 2) z--;
+				if(z > 2 && maze_basic[z-1][y][x] == 1) z--;
 				break;
 			}
 
@@ -451,6 +451,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim->Instance == TIM6){
 		//HAL_UART_Transmit(&huart5, &a[0], 1, 10);
+		maze_basic[6][6][6] = !maze_basic[6][6][6];
 
 /*
 		CUBEARR[z][x][y] = 0;
