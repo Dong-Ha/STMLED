@@ -395,13 +395,53 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 			HAL_UART_Receive_IT(&huart5, &rx1_data, 1);
 
+			/*
+			 case '':
+			 break;
+			 */
+
+			switch( rx1_data ) {
+			case 'r': {
+				if(x < 6) x++;
+				break;
+				}
+			case 'l': {
+				if(x > 2) x--;
+				break;
+			}
+			case 'g': {
+				if(y > 2) y--;
+				break;
+			}
+			case 'b': {
+				if(y < 6) y++;
+				break;
+			}
+			case 'u': {
+				if(z < 6) z++;
+				break;
+			}
+			case 'd': {
+				if(z > 2) z--;
+				break;
+			}
+
+
+
+
+			default :
+				break;
+			}
+
+
+/*
 			if(rx1_data == 'r' && x<6)x++;
 			else if(rx1_data == 'l' && x>2)x--;
 			else if(rx1_data == 'g' && y>2)y--;
 			else if(rx1_data == 'b' && y<6)y++;
 			else if(rx1_data == 'u' && z<6)z++;
 			else if(rx1_data == 'd' && z>2)z--;
-
+*/
 
 		}
 
